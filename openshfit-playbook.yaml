@@ -1,0 +1,13 @@
+---
+- name: Interact with OpenShift
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Get OpenShift version
+      community.openshift.openshift_info:
+        api_version: "v1"
+      register: openshift_version
+
+    - name: Show OpenShift version
+      debug:
+        msg: "OpenShift version: {{ openshift_version.ansible_facts.openshift_version }}"
