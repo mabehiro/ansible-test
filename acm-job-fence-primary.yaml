@@ -16,5 +16,5 @@
           - op: replace
             path: /spec/clusterFence
             value: Fenced
-      check_mode: no
+      check_mode: yes
 

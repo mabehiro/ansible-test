@@ -1,0 +1,40 @@
+---
+- name: Monitor DRPlacementControl Status
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Fetch DRPlacementControl object
+      redhat.openshift.k8s:
+        api_version: "ramendr.openshift.io/v1alpha1"
+        kind: DRPlacementControl
+        metadata:
+          name: bob2
+          namespace: openshift-dr-ops
+      register: drpc_result
+
+    - name: Debug DRPlacementControl response
+      debug:
+        var: drpc_result
+
+    - name: Check if DRPlacementControl has progression status
+      debug:
+        msg: "Progression status: {{ drpc_result.resources[0].status.progression }}"
+      when: drpc_result.resources | length > 0
+      failed_when: drpc_result.resources[0].status.progression is not defined
+
+    - name: Wait for DRPlacementControl to reach desired progression
+      k8s:
+        api_version: "ramendr.openshift.io/v1alpha1"
+        kind: DRPlacementControl
+        namespace: openshift-dr-ops
+        name: "{{ drpc_result.resources[0].metadata.name }}"
+        state: present
+      register: wait_result
+      until: "'Succeeded' == wait_result.resources[0].status.progression or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.progression"
+      retries: 10
+      delay: 30
+      no_log: false
+
+    - name: Final progression status
+      debug:
+        msg: "Final progression status: {{ wait_result.resources[0].status.progression }}"

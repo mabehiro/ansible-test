@@ -1,0 +1,23 @@
+- name: ACM Initiate Failover
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Initiate Failover
+      ansible.builtin.debug:
+        msg: "Failover is going to start."
+
+    - name: Initiate Failover
+      kubernetes.core.k8s_json_patch:
+        api_version: ramendr.openshift.io/v1alpha1
+        kind: DRPlacementControl
+        name: metro-vm-dr    # TODO get it from event if possible
+        namespace: openshift-dr-ops
+        patch:
+          - op: replace
+            path: /spec/action
+            value: Failover
+
+# Watch DRPC Status until the result is WaitOnUserToCleanup
+
+
+
