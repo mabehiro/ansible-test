@@ -4,12 +4,11 @@
   gather_facts: no
   tasks:
     - name: Fetch DRPlacementControl object
-      redhat.openshift.k8s:
+      kubernetes.core.k8s_info:
         api_version: "ramendr.openshift.io/v1alpha1"
         kind: DRPlacementControl
-        metadata:
-          name: bob2
-          namespace: openshift-dr-ops
+        name: bob2
+        namespace: openshift-dr-ops
       register: drpc_result
 
     - name: Debug DRPlacementControl response
@@ -23,7 +22,7 @@
       failed_when: drpc_result.resources[0].status.progression is not defined
 
     - name: Wait for DRPlacementControl to reach desired progression
-      k8s:
+      kubernetes.core.k8s_info::
         api_version: "ramendr.openshift.io/v1alpha1"
         kind: DRPlacementControl
         namespace: openshift-dr-ops
