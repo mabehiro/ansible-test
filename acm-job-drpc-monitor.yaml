@@ -27,12 +27,15 @@
         kind: DRPlacementControl
         namespace: openshift-dr-ops
         name: "{{ drpc_result.resources[0].metadata.name }}"
-        state: present
       register: wait_result
-      until: "'Succeeded' == wait_result.resources[0].status.progression or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.progression"
-      retries: 10
-      delay: 30
-      no_log: false
+      # until: "'Succeeded' == wait_result.resources[0].status.progression or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.progression"
+      # retries: 10
+      # delay: 30
+      # no_log: false
+
+    - name: Debug DRPlacementControl response
+      debug:
+        var: wait_result
 
     - name: Final progression status
       debug:
