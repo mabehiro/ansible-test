@@ -8,12 +8,12 @@
         msg: "Primary cluster is being fenched."
 
     - name: Fence the Primary managed cluster
-      kubernetes.core.k8s_json_patch:
-        kind: DRCluster
-        name: dr-cluster5  # TODO get it from event.
-        patch:
-          - op: replace
-            path: /spec/clusterFence
-            value: Fenced
+      redhat.openshift.k8s:
+        state: patched
+        definition:
+          kind: DRCluster
+          name: dr-cluster5  # TODO get it from event.
+          spec:
+            clusterFence: Fenced
 
 
