@@ -16,9 +16,9 @@
 
     - name: Check if DRPlacementControl has progression status
       debug:
-        msg: "Progression status: {{ drpc_result.resources[0].status.phase }}"
+        msg: "Progression status: {{ drpc_result.result.status.phase }}"
       when: drpc_result.resources | length > 0
-      failed_when: drpc_result.resources[0].status.phase is not defined
+      failed_when: drpc_result.result.status.phase is not defined
 
     - name: Wait for DRPlacementControl to reach desired progression
       redhat.openshift.k8s:
@@ -26,14 +26,14 @@
         kind: Project
         name: ns1
       register: wait_result
-      until: "'Active' == wait_result.resources[0].status.phase or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.phase"
+      until: "'Active' == wait_result.result.status.phase or 'WaitOnUserToCleanUp' == wait_result.result.status.phase"
       retries: 10
       delay: 30
       no_log: false
 
     - name: Final progression status
       debug:
-        msg: "Final progression status: {{ wait_result.resources[0].status.phase }}"
+        msg: "Final progression status: {{ wait_result.result.status.phase }}"
 
 # ---
 # - name: Monitor DRPlacementControl Status
