@@ -1,0 +1,19 @@
+
+- name: ACM Fence Primary
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Fence the Primary managed Cluster
+      ansible.builtin.debug:
+        msg: "Primary cluster is being fenched."
+
+    - name: Fence the Primary managed cluster
+      kubernetes.core.k8s_json_patch:
+        kind: DRCluster
+        name: dr-cluster5  # TODO get it from event.
+        patch:
+          - op: replace
+            path: /spec/clusterFence
+            value: Fenced
+
+
