@@ -7,10 +7,8 @@
       redhat.openshift.k8s:
         api_version: "project.openshift.io/v1"
         kind: Project
-        metadata:
-          name: ns1
+        name: ns1
       register: drpc_result
-
 
 # ---
 # - name: Monitor DRPlacementControl Status
