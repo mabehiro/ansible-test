@@ -21,7 +21,7 @@
       failed_when: drpc_result.resources[0].status.phase is not defined
 
     - name: Wait for DRPlacementControl to reach desired progression
-      redhat.openshift.k8s:
+      kubernetes.core.k8s_info:
         api_version: "project.openshift.io/v1"
         kind: Project
         name: ns1
