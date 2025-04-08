@@ -28,7 +28,7 @@
         namespace: openshift-dr-ops
         name: "{{ drpc_result.resources[0].metadata.name }}"
       register: wait_result
-      until: "'Completed' == wait_result.resources[0].status.progression or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.progression"
+      until: "'Test' == wait_result.resources[0].status.progression or 'WaitOnUserToCleanUp' == wait_result.resources[0].status.progression"
       retries: 10
       delay: 30
       no_log: false
@@ -40,3 +40,8 @@
     - name: Final progression status
       debug:
         msg: "Final progression status: {{ wait_result.resources[0].status.progression }}"
+
+    - name: Fail if DRPlacementControl is not in Completed or WaitOnUserToCleanUp
+      fail:
+        msg: "DRPlacementControl did not reach desired progression state within retries. Status: {{ wait_result.resources[0].status.progression }}"
+      when: "'Test' != wait_result.resources[0].status.progression and 'WaitOnUserToCleanUp' != wait_result.resources[0].status.progression"
