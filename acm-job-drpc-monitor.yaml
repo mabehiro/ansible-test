@@ -22,7 +22,7 @@
       failed_when: drpc_result.resources[0].status.progression is not defined
 
     - name: Wait for DRPlacementControl to reach desired progression
-      kubernetes.core.k8s_info::
+      kubernetes.core.k8s_info:
         api_version: "ramendr.openshift.io/v1alpha1"
         kind: DRPlacementControl
         namespace: openshift-dr-ops
