@@ -1,0 +1,15 @@
+---
+- name: Interact with OpenShift
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Delete a VM
+      redhat.openshift.k8s:
+        state: absent
+        resource_definition:
+          apiVersion: kubevirt.io/v1
+          kind: VirtualMachine
+          metadata:
+            name: rhel9-salmon-wolverine-65  # TODO get this from event
+            namespace: metro-dr-demo # TODO get this from event
+      check_mode: yes
