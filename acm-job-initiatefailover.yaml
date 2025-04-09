@@ -16,7 +16,7 @@
           - op: replace
             path: /spec/action
             value: Failover
-      check_mode: yes
+      check_mode: no
 
 # Watch DRPC Status until the result is WaitOnUserToCleanup
 

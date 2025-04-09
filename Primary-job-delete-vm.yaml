@@ -12,4 +12,4 @@
           metadata:
             name: rhel9-salmon-wolverine-65  # TODO get this from event
             namespace: metro-dr-demo # TODO get this from event
-      check_mode: yes
+      check_mode: no
