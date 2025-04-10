@@ -12,4 +12,4 @@
           metadata:
             name: rhel9-violet-ox-12
             namespace: ns2
-        force: yes
+        force: true
