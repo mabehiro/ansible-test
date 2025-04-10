@@ -7,19 +7,6 @@
       ansible.builtin.debug:
         msg: "VM is going to be deleted"
 
-    - name: Stop a VM.
-      kubernetes.core.k8s_json_patch:
-        api_version: kubevirt.io/v1
-        kind: VirtualMachine
-        name: rhel9-salmon-wolverine-65  # TODO get it from event.
-        namespace: metro-dr-demo
-        patch:
-          - op: replace
-            path: /spec/clusterFence
-            value: Fenced
-      check_mode: no
-
-
     - name: Delete a VM
       redhat.openshift.k8s:
         state: absent
@@ -29,4 +16,5 @@
           metadata:
             name: rhel9-salmon-wolverine-65  # TODO get this from event
             namespace: metro-dr-demo # TODO get this from event
-      check_mode: no
+        force: true
+      check_mode: yes
